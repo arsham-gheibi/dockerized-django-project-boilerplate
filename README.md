@@ -55,7 +55,7 @@ docker-compose build
 
 it may take a while to build the image
 
-## Step 5 | make your First app
+## Step 5 | Make your First app
 
 ```sh
 docker-compose run app sh -c "python manage.py startapp <app_name>"
