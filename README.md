@@ -39,6 +39,9 @@ Fill the .env file with your Project's Environment Variables
 6. DB_USER
 7. DB_PASSWORD
 8. DB_PORT
+9. POSTGRES_DB
+10. POSTGRES_USER
+11. POSTGRES_PASSWORD
 
 ## Step 3 | Install Docker and Docker Compose
 
