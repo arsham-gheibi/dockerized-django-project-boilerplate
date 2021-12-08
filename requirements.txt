@@ -1,4 +1,5 @@
-Django==4.0.*
-psycopg2==2.9.*
+Django==3.2.*
 Pillow==8.4.*
+psycopg2==2.9.*
+uWSGI==2.0.*
 flake8==4.0.*
