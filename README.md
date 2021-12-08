@@ -81,8 +81,26 @@ for removing current db data run the following command
 docker-compose down --volumes
 ```
 
-NOTE : for switch to Production or Development mode simply change the DEBUG variable in the docker-compose.yml file
+# Switching to the Production Environment
+
+for Switch to Production or Development mode simply change the DEBUG variable in the docker-compose.yml file
 
 Set DEBUG to 0 for Production and 1 for Development
+
+# Deploying the Project
+
+for deploying the project to the production server run the following command
+
+```sh
+docker-compose -f docker-compose-deploy.yml down --volumes
+docker-compose -f docker-compose-deploy.yml build
+docker-compose -f docker-compose-deploy.yml up
+```
+
+for any comands inside the container use the following pattern
+
+```sh
+docker-compose -f docker-compose-deploy.yml run --rm app sh -c "python manage.py <command>"
+```
 
 Happy Coding 🥳
