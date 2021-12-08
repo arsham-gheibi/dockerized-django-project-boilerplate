@@ -82,6 +82,7 @@ docker-compose down --volumes
 ```
 
 NOTE : for switch to Production or Development mode simply change the DEBUG variable in the docker-compose.yml file
+
 Set DEBUG to 0 for Production and 1 for Development
 
 Happy Coding 🥳
