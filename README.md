@@ -31,17 +31,12 @@ Fill the .env file with your Project's Environment Variables
 
 ## The Minimal Credentials are :
 
-1. ENVIROMENT (production or development)
-2. SECRET_KEY
-3. DOMAIN
-4. DB_HOST
-5. DB_NAME
-6. DB_USER
-7. DB_PASSWORD
-8. DB_PORT
-9. POSTGRES_DB
-10. POSTGRES_USER
-11. POSTGRES_PASSWORD
+1. SECRET_KEY=<your secret key>
+2. ALLOWED_HOSTS=<your allowed hosts>
+3. DB_HOST=<your db host>
+4. DB_NAME=<your db name>
+5. DB_USER=<your db user>
+6. DB_PASS=<your db pass>
 
 ## Step 3 | Install Docker and Docker Compose
 
@@ -61,7 +56,7 @@ it may take a while to build the image
 ## Step 5 | Make your First app
 
 ```sh
-docker-compose run app sh -c "python manage.py startapp <app_name>"
+docker-compose run --rm app sh -c "python manage.py startapp <app_name>"
 ```
 
 ## Step 6 | Run the app
@@ -70,6 +65,20 @@ For running the server simply run the following command
 
 ```sh
 docker-compose up
+```
+
+from now on, you can access your app on http://localhost:8000/
+
+to run any django command inside the container use the following pattern
+
+```sh
+docker-compose run --rm app sh -c "python manage.py <command>"
+```
+
+for removing current db data run the following command
+
+```sh
+docker-compose down --volumes
 ```
 
 Happy Coding 🥳

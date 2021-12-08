@@ -1,11 +1,18 @@
 from pathlib import Path
-from os import environ
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENVIROMENT = environ.get("ENVIROMENT", 'development')
-SECRET_KEY = environ.get("SECRET_KEY")
-DOMAIN = environ.get("DOMAIN")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS.extend(
+    filter(
+        None,
+        os.environ.get('ALLOWED_HOSTS', '').split(','),
+    )
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,7 +42,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -51,59 +58,47 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.environ.get("DB_HOST"),
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASS")
+    }
+}
+
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATIC_URL = 'static/'
-MEDIA_URL = "media/"
+STATIC_URL = '/static/static/'
+MEDIA_URL = "/static/media/"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-if ENVIROMENT == 'development':
-
-    DEBUG = True
-    ALLOWED_HOSTS = ["127.0.0.1", "localhost", DOMAIN]
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+if DEBUG:
 
     STATIC_ROOT = "staticfiles"
     MEDIA_ROOT = "mediafiles"
 
-    INTERNAL_IPS = ["127.0.0.1"]
-
     SECURE_BROWSER_XSS_FILTER = False
 
 
-elif ENVIROMENT == 'production':
+elif not DEBUG:
 
-    DEBUG = False
-    ALLOWED_HOSTS = [DOMAIN, f"www.{DOMAIN}"]
     MIDDLEWARE += ["csp.middleware.CSPMiddleware"]
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": environ.get("DB_NAME"),
-            "USER": environ.get("DB_USER"),
-            "PASSWORD": environ.get("DB_PASSWORD"),
-            "HOST": environ.get("DB_HOST"),
-            "PORT": environ.get("DB_PORT"),
-        }
-    }
 
     STATIC_ROOT = "/vol/web/static"
     MEDIA_ROOT = "/vol/web/media"
