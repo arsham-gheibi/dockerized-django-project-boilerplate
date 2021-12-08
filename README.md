@@ -31,12 +31,15 @@ Fill the .env file with your Project's Environment Variables
 
 ## The Minimal Credentials are :
 
-1. SECRET_KEY=<your secret key>
-2. ALLOWED_HOSTS=<your allowed hosts>
-3. DB_HOST=<your db host>
-4. DB_NAME=<your db name>
-5. DB_USER=<your db user>
-6. DB_PASS=<your db pass>
+1. SECRET_KEY=
+2. DEBUG=
+3. ALLOWED_HOSTS=
+4. DB_HOST=
+5. DB_NAME=
+6. DB_USER=
+7. DB_PASS=
+
+Note : Set DEBUG to 0 for Production and 1 for Development
 
 ## Step 3 | Install Docker and Docker Compose
 
