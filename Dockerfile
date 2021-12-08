@@ -3,20 +3,28 @@ FROM python:3.10.0-alpine3.15
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
-RUN apk add --update --no-cache postgresql-client jpeg-dev
-RUN apk add --update --no-cache --virtual .tmp-build-deps \
-    gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
-RUN pip install -r requirements.txt
-RUN apk del .tmp-build-deps
-
-RUN mkdir /app
-WORKDIR /app
 COPY ./app /app
+COPY ./scripts /scripts
 
-RUN mkdir -p /vol/web/static
-RUN mkdir -p /vol/web/media
+WORKDIR /app
+EXPOSE 8000
 
-RUN adduser -D user
-RUN chown -R user:user /vol/
-RUN chmod -R 755 /vol/web
-USER user
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip setuptools && \
+    apk add --update --no-cache postgresql-client jpeg-dev && \
+    apk add --update --no-cache --virtual .tmp-deps \
+    build-base postgresql-dev musl-dev linux-headers zlib zlib-dev && \
+    /py/bin/pip install -r /requirements.txt && \
+    apk del .tmp-deps && \
+    adduser --disabled-password --no-create-home app && \
+    mkdir -p /vol/web/static && \
+    mkdir -p /vol/web/media && \
+    chown -R app:app /vol && \
+    chmod -R 755 /vol && \
+    chmod -R +x /scripts
+
+ENV PATH="/scripts:/py/bin:$PATH"
+
+USER app
+
+CMD [ "run.sh" ]

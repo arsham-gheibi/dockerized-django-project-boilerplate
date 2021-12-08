@@ -1,31 +1,32 @@
-version: "3"
+version: "3.7"
 
 services:
   app:
     build:
       context: .
+    command: >
+      sh -c "python manage.py wait_for_db &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     ports:
-      - "8000:8000"
+      - 8000:8000
     volumes:
       - ./app:/app
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+      - ./data/web:/vol/web
     environment:
-      - ENVIROMENT=${ENVIROMENT}
-      - SECRET_KEY=${SECRET_KEY}
-      - DOMAIN=${DOMAIN}
-      - DB_HOST=${DB_HOST}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_PORT=${DB_PORT}
+      - SECRET_KEY=supersecretpassword
+      - DEBUG=1
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DB_HOST=db
+      - DB_NAME=testdb
+      - DB_USER=testuser
+      - DB_PASS=testpass
     depends_on:
       - db
       
   db:
     image: postgres:14.1-alpine
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
