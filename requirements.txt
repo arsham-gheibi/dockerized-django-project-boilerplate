@@ -1,5 +1,6 @@
-Django==3.2.*
-Pillow==8.4.*
-psycopg2==2.9.*
-uWSGI==2.0.*
-flake8==4.0.*
+Django>=3.2.10,<3.3
+Pillow>=8.4.0,<8.5
+psycopg2>=2.9.2,<2.10
+uWSGI>=2.0.20,<2.1
+flake8>=4.0.1,<4.1
+django-debug-toolbar>=3.2.4,<3.3
